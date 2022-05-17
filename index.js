@@ -1,4 +1,5 @@
 const prompt = require("prompt-sync")({ sigint: true });
+const colors = require("colors");
 
 //----------VARIABLES--------------//
 
@@ -9,13 +10,13 @@ let todoList = [
 ];
 
 let commandList = [
-  { id: 1, text: "Show to do list" },
-  { id: 2, text: "Delete any TODO" },
-  { id: 3, text: "Update items as done" },
-  { id: 4, text: "Show number of tasks left to do" },
-  { id: 5, text: "Show done TODO's tasks" },
-  { id: 6, text: "Add new TODO task" },
-  { id: 7, text: "Edit any task" },
+  { id: 1, text: "Show to do list".blue },
+  { id: 2, text: "Delete any TODO".yellow },
+  { id: 3, text: "Update items as done".magenta },
+  { id: 4, text: "Show number of tasks left to do".red },
+  { id: 5, text: "Show done TODO's tasks".green },
+  { id: 6, text: "Add new TODO task".cyan },
+  { id: 7, text: "Edit any task".red },
 ];
 
 //----------FUNCTIONS-------------//
@@ -44,7 +45,7 @@ let removeTodo = () => {
   let deleteNum = +prompt("Enter the number of task you want to delete: ");
   todoList = todoList.filter((element) => element.number !== deleteNum);
   if (!todoList.length) {
-    console.log(`To do list is empty!`);
+    console.log(`To do list is empty!`.green);
     mainFunction();
     // return;
   }
@@ -79,14 +80,14 @@ let doneTodos = () => {
 
 let mainFunction = () => {
   for (const item of commandList) {
-    console.log(`${item["id"]}: ${item["text"]}`);
+    console.log(`${item["id"]}: ${item["text"]}`.red);
   }
 
-  let input = +prompt("Enter a command number: ");
+  let input = +prompt("Enter a command number: ".green);
   switch (input) {
     case 1: //show to do list
       if (!todoList.length) {
-        console.log(`To do list is empty!`);
+        console.log(`To do list is empty!`.green);
         break;
       }
       console.table(todoList);
@@ -123,7 +124,7 @@ let mainFunction = () => {
       console.table(todoList);
 
     default:
-      console.log("Enter a command number");
+      console.log("Enter a command number".red);
       break;
   }
 };
