@@ -3,9 +3,9 @@ const prompt = require("prompt-sync")({ sigint: true });
 //----------VARIABLES--------------//
 
 let todoList = [
-  { id: 1, text: "jogging", done: false },
-  { id: 2, text: "cleaning", done: true },
-  { id: 3, text: "live code", done: false },
+  { number: 1, text: "jogging", done: false },
+  { number: 2, text: "cleaning", done: true },
+  { number: 3, text: "live code", done: false },
 ];
 
 let commandList = [
@@ -22,45 +22,39 @@ let commandList = [
 
 // Add item
 
-let insertTodo = function (taskInput) {
-  todoList.push({ id: todoList.length + 1, text: taskInput, done: false });
+let insertTodo = () => {
+  let taskInput = prompt("Enter a new task: ");
+  todoList.push({ number: todoList.length + 1, text: taskInput, done: false });
   pendingTodo();
   mainFunction();
 };
 
 // Update Items
 
-let updateTodo = function (taskNum) {
-  todoList[taskNum - 1].done = true;
+let updateTodo = () => {
+  let taskNum = +prompt("Which task number you want to update? ");
+  let found = todoList.find((elemenet) => elemenet.number === taskNum);
+  found.done = true;
   doneTodos();
   mainFunction();
 };
 
 //Remove Item
-let removeTodo = function (deleteNum) {
-  todoList = todoList.filter((element) => element.id !== deleteNum);
+let removeTodo = () => {
+  let deleteNum = +prompt("Enter the number of task you want to delete: ");
+  todoList = todoList.filter((element) => element.number !== deleteNum);
+  if (!todoList.length) {
+    console.log(`To do list is empty!`);
+    mainFunction();
+    // return;
+  }
   console.table(todoList);
   mainFunction();
-
-  //another option:
-  // let ourTask;
-  // let index = todoList.findIndex(el => el.id === deleteNum);
-  // console.log(index);
-  // todoList.splice(index,1);
-
-  //another try, long one:
-  // for (const item of todoList) {
-  //     if(item["id"]===deleteNum){
-  //         ourTask = item;
-  //     }
-  // }
 };
 
 //Edit Item
-let editTodo = function (taskEdit, taskText) {
-  let index = todoList.findIndex((el) => el.id === taskEdit);
-  console.log(index);
-  todoList[index].text = taskText;
+let editTodo = (taskEdit, taskText) => {
+  todoList.find((el) => el.number === taskEdit).text = taskText;
   console.table(todoList);
   mainFunction();
 };
@@ -68,14 +62,14 @@ let editTodo = function (taskEdit, taskText) {
 //filter Items
 
 //create function to display all pending todos
-let pendingTodo = function () {
+let pendingTodo = () => {
   let stillTodo = todoList.filter((element) => element["done"] === false);
   console.table(stillTodo);
   mainFunction();
 };
 
 //create function to display all done todos
-let doneTodos = function () {
+let doneTodos = () => {
   let doneTodo = todoList.filter((element) => element["done"] === true);
   console.table(doneTodo);
   mainFunction();
@@ -83,7 +77,7 @@ let doneTodos = function () {
 
 //-----------------MAIN PART------------------//
 
-let mainFunction = function () {
+let mainFunction = () => {
   for (const item of commandList) {
     console.log(`${item["id"]}: ${item["text"]}`);
   }
@@ -91,20 +85,22 @@ let mainFunction = function () {
   let input = +prompt("Enter a command number: ");
   switch (input) {
     case 1: //show to do list
-      for (const item of todoList) {
-        console.table(`Task ${item["id"]}: ${item["text"]}`);
+      if (!todoList.length) {
+        console.log(`To do list is empty!`);
+        break;
       }
+      console.table(todoList);
+      mainFunction();
       break;
 
     case 2: //delete any todo
-      let deleteNum = +prompt("Enter the number of task you want to delete: ");
+      console.table(todoList);
+      removeTodo();
 
-      removeTodo(deleteNum);
       break;
 
     case 3: //Update items as done
-      let taskNum = +prompt("Which task you want to update? ");
-      updateTodo(taskNum);
+      updateTodo();
       break;
 
     case 4: //show pending todos //console log the tasks with done property false
@@ -116,14 +112,13 @@ let mainFunction = function () {
       break;
 
     case 6: //adding new TODO item //Don’t allow adding empty items
-      let taskInput = prompt("Enter a new task: ");
-      insertTodo(taskInput);
+      insertTodo();
       break;
 
     case 7: //editing any task
       console.table(todoList);
-      let taskEdit = +prompt("Enter the id of task you want to change: ");
-      let taskText = prompt("Enter the new task: ");
+      let taskEdit = +prompt("Enter the number of task you want to change: ");
+      let taskText = prompt("Change the task: ");
       editTodo(taskEdit, taskText);
       console.table(todoList);
 

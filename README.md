@@ -8,13 +8,15 @@
 6. Show done todos
 7. Don’t allow adding empty items
 
-## ToDo List :
+## ToDo List (e.g) :
 
 _1- Shopping;_
 
 _2- Meet with PR department;_
 
-_3- Pay bills 4- By milk;_
+_3- Pay bills;_ 
+
+_4- By milk;_
 
 _5- Visiting Tommy;_
 
